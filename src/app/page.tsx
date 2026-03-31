@@ -47,7 +47,7 @@ const buildPrompt = (profile: any, contentType: string, tone: string, tema: stri
 
   REGLAS GENERALES:
   - Escribí en español rioplatense cuando el tono sea cercano, y en español neutro formal para lo institucional
-  - Nunca inventés datos, cifras o estadísticas específicas
+  - Nunca inventés datos, cifras o estadísticas específicas, buscalas en internet
   - El contenido debe posicionar al legislador como protagonista y con conocimiento del tema
 
   TEMA/EVENTO: ${tema}
@@ -149,7 +149,7 @@ export default function Page() {
         {/* Cabecera */}
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "30px", paddingBottom: "16px", borderBottom: "1px solid rgba(100,116,139,0.2)" }}>
           <div style={{ color: "#94A3B8", fontSize: "14px" }}>
-            Hola, <strong style={{ color: "#E2E8F0" }}>{user.nombre}</strong>
+            Hola, <strong style={{ color: "#E2E8F0" }}>{user?.nombre}</strong>
           </div>
           <button
             onClick={() => { document.cookie = "auth_token=; Max-Age=0; path=/"; window.location.reload() }}
@@ -205,7 +205,7 @@ export default function Page() {
           </div>
 
           <div style={{ marginBottom: "24px" }}>
-            <label style={{ fontSize: "12px", color: "#94A3B8", textTransform: "uppercase", letterSpacing: "1.5px", fontWeight: 600, display: "block", marginBottom: "8px" }}>Contexto adicional</label>
+            <label style={{ fontSize: "12px", color: "#94A3B8", textTransform: "uppercase", letterSpacing: "1.5px", fontWeight: 600, display: "block", marginBottom: "8px" }}>Contexto</label>
             <textarea value={contexto} onChange={(e) => setContexto(e.target.value)} rows={3} style={{ width: "100%", padding: "12px 16px", background: "rgba(2,6,23,0.5)", border: "1px solid rgba(100,116,139,0.15)", borderRadius: "10px", color: "#E2E8F0", outline: "none", resize: "vertical" }} />
           </div>
 

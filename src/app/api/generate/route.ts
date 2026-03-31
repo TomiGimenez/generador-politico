@@ -2,10 +2,11 @@ import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
   try {
-    const { prompt } = await req.json();
+    const body = await req.json();
+    const { prompt, model, max_tokens, system, messages } = body;
 
-    if (!prompt) {
-      return NextResponse.json({ error: "No prompt provided" }, { status: 400 });
+    if (!prompt && (!messages || !Array.isArray(messages))) {
+      return NextResponse.json({ error: "No prompt or messages provided" }, { status: 400 });
     }
 
     const apiKey = process.env.ANTHROPIC_API_KEY;
@@ -13,15 +14,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Missing Anthropic API key" }, { status: 500 });
     }
 
-    const body = await req.json();
-
-    const { model, max_tokens, system, messages } = body;
-    if (!messages || !Array.isArray(messages)) {
-      return NextResponse.json(
-        { error: "Formato de mensaje inválido" },
-        { status: 400 }
-      );
-    }
+    const finalMessages = messages || [{ role: "user", content: prompt }];
 
     const response = await fetch("https://api.anthropic.com/v1/messages", {
       method: "POST",
@@ -32,9 +25,9 @@ export async function POST(req: Request) {
       },
       body: JSON.stringify({
         model: model || "claude-sonnet-4-20250514",
-        max_tokens: Math.min(max_tokens, 4000, 8000), // Limitar tokens
+        max_tokens: Math.min(max_tokens || 4000, 4000), // Asegurar que sea un número válido y limitar a 4000
         system: system || undefined,
-        messages,
+        messages: finalMessages,
       }),
     });
 
