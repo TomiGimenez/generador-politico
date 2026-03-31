@@ -27,7 +27,7 @@ export async function POST(req: Request) {
         // 3. Generar token
         const token = jwt.sign(
             { id: user.id, email: user.email, nombre: user.nombre },
-            process.env.JWT_SECRET || "mi_secreto_super_seguro_123", // Cambiar en .env.local
+            process.env.JWT_SECRET!,
             { expiresIn: "7d" }
         );
 
