@@ -62,7 +62,6 @@ export default function Page() {
   const [isCheckingAuth, setIsCheckingAuth] = useState(true);
 
   const [profile, setProfile] = useState(EMPTY_PROFILE);
-  const [showProfile, setShowProfile] = useState(false);
   const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
   const [tone, setTone] = useState("institucional");
   const [tema, setTema] = useState("");
@@ -170,36 +169,31 @@ export default function Page() {
         </div>
 
         {/* Perfil del Legislador */}
-        <div style={{ marginBottom: "20px" }}>
-          <button
-            onClick={() => setShowProfile(!showProfile)}
-            style={{ background: "rgba(100,116,139,0.1)", border: "1px solid rgba(100,116,139,0.2)", color: "#94A3B8", fontSize: "12px", padding: "6px 14px", borderRadius: "8px", cursor: "pointer", fontFamily: "'Outfit', sans-serif", fontWeight: 500 }}
-          >
-            {showProfile ? "▾ Ocultar perfil" : "▸ Configurar perfil del legislador/a"}
-          </button>
-          {showProfile && (
-            <div style={{ marginTop: "12px", background: "rgba(15,23,42,0.6)", border: "1px solid rgba(203,166,82,0.12)", borderRadius: "12px", padding: "20px", display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "12px", animation: "slideUp 0.3s ease" }}>
-              {(
-                [
-                  { key: "nombre", label: "Nombre", placeholder: "Ej: Dip. María González" },
-                  { key: "bloque", label: "Bloque", placeholder: "Ej: Bloque Federal" },
-                  { key: "distrito", label: "Distrito", placeholder: "Ej: Córdoba" },
-                  { key: "partido", label: "Partido", placeholder: "Ej: Partido Federal" },
-                  { key: "temas", label: "Temas de trabajo", placeholder: "Ej: Seguridad, Educación, Economía..." },
-                ] as const
-              ).map((f) => (
-                <div key={f.key} style={f.key === "temas" ? { gridColumn: "span 2" } : {}}>
-                  <label style={{ fontSize: "10px", color: "#64748B", textTransform: "uppercase", letterSpacing: "1px", fontWeight: 600 }}>{f.label}</label>
-                  <input
-                    value={(profile as any)[f.key]}
-                    onChange={(e) => setProfile({ ...profile, [f.key]: e.target.value })}
-                    placeholder={f.placeholder}
-                    style={{ width: "100%", marginTop: "4px", padding: "8px 12px", background: "rgba(2,6,23,0.5)", border: "1px solid rgba(100,116,139,0.15)", borderRadius: "8px", color: "#E2E8F0", fontSize: "13px", fontFamily: "'Outfit', sans-serif", outline: "none", boxSizing: "border-box" }}
-                  />
-                </div>
-              ))}
-            </div>
-          )}
+        <div style={{ background: "rgba(15,23,42,0.6)", border: "1px solid rgba(203,166,82,0.12)", borderRadius: "16px", padding: "24px", marginBottom: "24px" }}>
+          <h3 style={{ fontSize: "12px", color: "#94A3B8", textTransform: "uppercase", letterSpacing: "1.5px", fontWeight: 700, margin: "0 0 16px 0" }}>
+            Perfil del Legislador/a
+          </h3>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "12px" }}>
+            {(
+              [
+                { key: "nombre", label: "Nombre", placeholder: "Ej: Dip. María González" },
+                { key: "bloque", label: "Bloque", placeholder: "Ej: Bloque Federal" },
+                { key: "distrito", label: "Distrito", placeholder: "Ej: Córdoba" },
+                { key: "partido", label: "Partido", placeholder: "Ej: Partido Federal" },
+                { key: "temas", label: "Temas de trabajo", placeholder: "Ej: Seguridad, Educación, Economía..." },
+              ] as const
+            ).map((f) => (
+              <div key={f.key} style={f.key === "temas" ? { gridColumn: "span 2" } : {}}>
+                <label style={{ fontSize: "10px", color: "#64748B", textTransform: "uppercase", letterSpacing: "1px", fontWeight: 600 }}>{f.label}</label>
+                <input
+                  value={(profile as any)[f.key]}
+                  onChange={(e) => setProfile({ ...profile, [f.key]: e.target.value })}
+                  placeholder={f.placeholder}
+                  style={{ width: "100%", marginTop: "4px", padding: "8px 12px", background: "rgba(2,6,23,0.5)", border: "1px solid rgba(100,116,139,0.15)", borderRadius: "8px", color: "#E2E8F0", fontSize: "13px", fontFamily: "'Outfit', sans-serif", outline: "none", boxSizing: "border-box" }}
+                />
+              </div>
+            ))}
+          </div>
         </div>
 
         {/* Opciones Formulario */}

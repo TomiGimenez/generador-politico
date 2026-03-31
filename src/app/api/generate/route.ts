@@ -13,22 +13,28 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Missing Anthropic API key" }, { status: 500 });
     }
 
+    const body = await req.json();
+
+    const { model, max_tokens, system, messages } = body;
+    if (!messages || !Array.isArray(messages)) {
+      return NextResponse.json(
+        { error: "Formato de mensaje inválido" },
+        { status: 400 }
+      );
+    }
+
     const response = await fetch("https://api.anthropic.com/v1/messages", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         "x-api-key": apiKey,
-        "anthropic-version": "2023-06-01"
+        "anthropic-version": "2023-06-01",
       },
       body: JSON.stringify({
-        model: "claude-3-5-sonnet-20240620", // using typical model, their string "claude-sonnet-4-20250514" was theoretical or upcoming
-        max_tokens: 2000,
-        messages: [
-          {
-            role: "user",
-            content: prompt,
-          },
-        ],
+        model: model || "claude-sonnet-4-20250514",
+        max_tokens: Math.min(max_tokens, 4000, 8000), // Limitar tokens
+        system: system || undefined,
+        messages,
       }),
     });
 
